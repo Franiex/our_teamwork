@@ -1,39 +1,3 @@
-# --------------------------------------------------------------------
-# USE OF NOAA GML DATA
-# 
-# These data are made freely available to the public and the scientific
-# community in the belief that their wide dissemination will lead to
-# greater understanding and new scientific insights. To ensure that GML
-# receives fair credit for their work please include relevant citation
-# text in publications. We encourage users to contact the data providers,
-# who can provide detailed information about the measurements and
-# scientific insight.  In cases where the data are central to a
-# publication, coauthorship for data providers may be appropriate.
-# 
-# 
-# 
-# Contact:  Xin Lan (xin.lan@noaa.gov)
-# 
-# File Creation: Mon Nov 24 05:02:02 2025
-# 
-# 
-# --------------------------------------------------------------------
-# 
-# 
-# See gml.noaa.gov/ccgg/trends/ for additional details.
-# 
-# Values represent the average of smoothed seasonal curves and smoothed, 
-# de-seasonalized trends of daily mean CO2 data from the four GML Atmospheric Baseline
-# observatories; 
-# Barrow, Alaska, Mauna Loa, Hawaii, American Samoa, and South Pole, Antarctica.
-#
-# CO2 expressed as a mole fraction in dry air, micromol/mol, abbreviated as ppm
-#
-# NOTE: In general, the data presented for the last year are subject to change, 
-# depending on recalibration of the reference gas mixtures used, and other quality
-# control procedures. Occasionally, earlier years may also be changed for the same
-# reasons.  Usually these changes are minor.
-# 
 year,month,day,smoothed,trend
 2015, 1, 1,  399.81,  398.51
 2015, 1, 2,  399.83,  398.51
