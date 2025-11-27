@@ -1,7 +1,7 @@
 import pandas as pd
 
 # 1. 读取CSV文件（默认逗号分隔，无需额外指定sep）
-input_file = r"data/pre_data/globe/original_co2.csv"  # 替换为你的实际文件路径
+input_file = "../../csv_file/globe/original_co2.csv"  # 替换为你的实际文件路径
 df = pd.read_csv(input_file, encoding="utf-8")  # 若报错可替换为"gbk"
 
 # 2. 按「年+月」分组，计算smoothed和trend的月度均值（保留2位小数）
