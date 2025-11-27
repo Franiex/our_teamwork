@@ -28,4 +28,4 @@ print("指定国家的年度温度统计：")
 print(yearly_stats)
 
 # 保存为新CSV
-yearly_stats.to_csv(f"{country}_tempera.csv", index=False)
+yearly_stats.to_csv(f"../../csv_file/region/{country}_tempera.csv", index=False)

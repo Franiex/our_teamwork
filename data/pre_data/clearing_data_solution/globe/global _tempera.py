@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 # 1. 读取NASA GISS月度温度异常数据（包含-.xx格式数据，pandas会自动识别为负数）
-url = r"data/pre_data/globe/original_tempera_difference.csv"
+url = r"../../csv_file/globe/original_tempera_difference.csv"
 data = pd.read_csv(url, skiprows=1)  # 跳过标题行
 
 # 2. 定义月度列名（J到D对应1-12月）
@@ -26,7 +26,7 @@ result = data[['Year', 'Annual_Mean_Absolute', 'Annual_Median_Absolute', 'Annual
 result = result.round(2)  # 所有数值列统一保留两位小数
 
 # 7. 保存结果到CSV文件
-result.to_csv('annual_temperature_data.csv', index=False, float_format='%.2f')
+result.to_csv('../../csv_file/globe/annual_temperature_data.csv', index=False, float_format='%.2f')
 
 # 8. 显示前10行结果
 print("处理后的年度绝对温度数据（仅含绝对温度统计量）：")
