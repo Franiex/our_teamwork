@@ -1,31 +1,31 @@
 import pandas as pd
 
-# 1. 读取CSV文件
+# 1. Read CSV file
 df = pd.read_csv("../../csv_file/region/GlobalLandTemperaturesByCountry.csv")
 country = ""
 target_country = country
 temperature_col = "AverageTemperature"
 
-# 2. 筛选指定国家 + 去除温度列的缺失值
+# 2. Filter specified country + Remove missing values in temperature column
 df_filtered = df[df["Country"] == target_country].dropna(subset=[temperature_col])
 
-# 3. 处理日期：提取年份
+# 3. Process date: Extract year
 df_filtered["dt"] = pd.to_datetime(df_filtered["dt"])
 df_filtered["year"] = df_filtered["dt"].dt.year
 
-# 4. 按年份分组，计算统计量，并保留两位小数
+# 4. Group by year, calculate statistics, and keep two decimal places
 yearly_stats = df_filtered.groupby("year")[temperature_col].agg(
     mean="mean",
     median="median",
     standard_deviation="std"
 ).reset_index()
 
-# 5. 保留两位小数
+# 5. Keep two decimal places
 yearly_stats = yearly_stats.round(2)
 
-# 输出结果
-print("指定国家的年度温度统计：")
+# Output results
+print("Annual temperature statistics for the specified country:")
 print(yearly_stats)
 
-# 保存为新CSV
+# Save as new CSV
 yearly_stats.to_csv(f"../../csv_file/region/{country}_tempera.csv", index=False)
