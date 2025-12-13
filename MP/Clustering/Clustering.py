@@ -21,7 +21,7 @@ country_temp = (
       .reset_index()
 )
 
-# 3. SIMULATE REGIONAL CO₂ (OPTIONAL)
+# 3. SIMULATE REGIONAL CO₂
 # Global baseline ~400 ppm with regional variation
 np.random.seed(42)
 country_temp['CO2'] = 400 + np.random.normal(0, 15, size=len(country_temp))
