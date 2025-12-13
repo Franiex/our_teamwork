@@ -1,59 +1,54 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster.cluster import KMeans
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 # 1. LOAD DATA
-temp = pd.read_csv("final_annual_temperature_data.csv")
-co2 = pd.read_csv("final_co2_monthly.csv")
+df = pd.read_csv("../../../pre_data/csv_file/region/GlobalLandTemperaturesByCountry.csv")
 
-# Use temperature trend (last available year) as global baseline
-latest_temp = temp['Annual_Mean_Absolute'].iloc[-1]
+# Keep necessary columns
+df = df[['dt', 'AverageTemperature', 'Country']].dropna()
 
-# Use CO2 trend (last available year)
-latest_co2 = co2['trend_monthly'].iloc[-1]
+# Convert date
+df['dt'] = pd.to_datetime(df['dt'])
+df['Year'] = df['dt'].dt.year
 
-# 2. SIMULATE GEOGRAPHICAL REGIONS
-regions = ["North America", "South America", "Europe", "Africa",
-           "Asia", "Oceania", "Middle East", "Arctic"]
+# 2. AGGREGATE TO COUNTRY-LEVEL MEANS
+country_temp = (
+    df.groupby('Country')['AverageTemperature']
+      .mean()
+      .reset_index()
+)
 
-# Simulate temperature variation around global mean
-region_temps = latest_temp + np.random.normal(0, 0.5, len(regions))
+# 3. SIMULATE REGIONAL CO₂ (OPTIONAL)
+# Global baseline ~400 ppm with regional variation
+np.random.seed(42)
+country_temp['CO2'] = 400 + np.random.normal(0, 15, size=len(country_temp))
 
-# OPTIONAL: simulate CO₂ concentration differences
-region_co2 = latest_co2 + np.random.normal(0, 3.0, len(regions))
+# 4. FEATURE MATRIX
+X = country_temp[['AverageTemperature', 'CO2']]
 
-df = pd.DataFrame({
-    "Region": regions,
-    "Temp": region_temps,
-    "CO2": region_co2
-})
-
-print("Simulated Regional Dataset:")
-print(df)
-
-# 3. PREPARE FOR CLUSTERING
-features = df[['Temp', 'CO2']]
+# Standardize for K-Means
 scaler = StandardScaler()
-scaled_features = scaler.fit_transform(features)
+X_scaled = scaler.fit_transform(X)
 
-# 4. K-MEANS CLUSTERING
-kmeans = KMeans(n_clusters=3, random_state=42)
-df['Cluster'] = kmeans.fit_predict(scaled_features)
+# 5. APPLY K-MEANS CLUSTERING
+kmeans = KMeans(n_clusters=4, random_state=42)
+country_temp['Cluster'] = kmeans.fit_predict(X_scaled)
 
-print("\nCluster Assignments:")
-print(df)
-
-# 5. VISUALIZATION
-plt.figure(figsize=(10, 6))
-plt.scatter(df['Temp'], df['CO2'], c=df['Cluster'], s=200)
-
-for i, label in enumerate(df['Region']):
-    plt.text(df['Temp'][i] + 0.01, df['CO2'][i] + 0.01, label)
-
-plt.xlabel("Regional Temperature (°C)")
-plt.ylabel("Regional CO₂ Concentration (ppm)")
-plt.title("K-Means Clustering of Regions by Temperature and CO₂")
+# 6. VISUALIZATION
+plt.figure(figsize=(8,6))
+plt.scatter(
+    country_temp['AverageTemperature'],
+    country_temp['CO2'],
+    c=country_temp['Cluster']
+)
+plt.xlabel("Average Temperature (°C)")
+plt.ylabel("Simulated CO₂ (ppm)")
+plt.title("Climate Clusters Based on Temperature and CO₂")
 plt.grid(True)
 plt.show()
+
+# 7. DISPLAY SAMPLE OUTPUT
+print(country_temp.head())

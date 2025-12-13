@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d3cac80f-9eee-4cb2-b1c2-1afca2605ad6" name="Changes" comment="1" />
+    <list default="true" id="d3cac80f-9eee-4cb2-b1c2-1afca2605ad6" name="Changes" comment="1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MP/Clustering/Clustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/MP/Clustering/Clustering.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,7 +136,7 @@
       <workItem from="1763730123284" duration="876000" />
       <workItem from="1765393357123" duration="1654000" />
       <workItem from="1765529805460" duration="7828000" />
-      <workItem from="1765598989903" duration="710000" />
+      <workItem from="1765598989903" duration="1814000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -167,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765599270174</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="1">
+      <option name="closed" value="true" />
+      <created>1765599864205</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765599864205</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
