@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 
 # 1. LOAD DATA
-temp = pd.read_csv('final_annual_temperature_data.csv')
+temp = pd.read_csv('../../../pre_data/csv_file/globe/final_annual_temperature_data.csv')
 
 # We will use the annual mean absolute temperature
 X = temp[['Year']]
