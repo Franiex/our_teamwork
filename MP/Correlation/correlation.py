@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # 1. LOAD DATA
-temp = pd.read_csv("final_annual_temperature_data.csv")
-co2 = pd.read_csv("final_co2_monthly.csv")
+temp = pd.read_csv("../../../final_annual_temperature_data.csv")
+co2 = pd.read_csv("../../../final_co2_monthly.csv")
 
 # Expected columns:
 # temp: country | year | average_temperature | (maybe rolling_mean if you added it)
