@@ -3,24 +3,24 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 
-# 1. LOAD DATA
+# 1. Load data
 temp = pd.read_csv("../../../pre_data/csv_file/globe/final_annual_temperature_data.csv")
 
 # We will use the annual mean absolute temperature
 X = temp[['Year']]
 y = temp['Annual_Mean_Absolute']
 
-# 2. TRAIN LINEAR REGRESSION MODEL
+# 2. Linear Regression Model
 model = LinearRegression()
 model.fit(X, y)
 
-# 3. MAKE FORECASTS FOR NEXT 10 YEARS
+# 3. Make forecast for the next decade
 last_year = temp['Year'].max()
 future_years = np.arange(last_year + 1, last_year + 11).reshape(-1, 1)
 
 future_predictions = model.predict(future_years)
 
-# 4. MODEL PERFORMANCE
+# 4. Model performance
 
 y_pred = model.predict(X)
 r2 = r2_score(y, y_pred)

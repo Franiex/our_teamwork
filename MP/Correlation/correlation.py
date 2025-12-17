@@ -2,12 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. LOAD DATASETS
+# 1. Load data
 annual_temp = pd.read_csv("../../../pre_data/csv_file/globe/final_annual_temperature_data.csv")
 co2 = pd.read_csv("../../../pre_data/csv_file/globe/final_co2_monthly.csv")
 global_temp = pd.read_csv("../../../pre_data/csv_file/region/GlobalLandTemperaturesByCountry.csv")
 
-# 2. PREPROCESS GLOBAL TEMPERATURE DATA
+# 2. Preprocess global temperature data
 global_temp = global_temp[['dt', 'AverageTemperature', 'Country']].dropna()
 global_temp['dt'] = pd.to_datetime(global_temp['dt'])
 global_temp['Year'] = global_temp['dt'].dt.year
@@ -19,7 +19,7 @@ country_annual_temp = (
     .reset_index()
 )
 
-# 3. PREPROCESS CO₂ DATA (ANNUAL MEAN)
+# 3. Preprocess CO2 data
 co2_annual = (
     co2.groupby('year')['smoothed_monthly']
     .mean()
@@ -27,7 +27,7 @@ co2_annual = (
     .rename(columns={'year': 'Year', 'smoothed_monthly': 'CO2'})
 )
 
-# 4. MERGE ALL DATASETS
+# 4. Merge datasets
 merged = country_annual_temp.merge(co2_annual, on='Year', how='left')
 
 # Merge with final annual temperature data if Year exists
@@ -39,19 +39,19 @@ if 'Year' in annual_temp.columns:
         suffixes=('_Country', '_Global')
     )
 
-# 5. SELECT NUMERIC FEATURES
+# 5. Select numeric features
 numeric_df = merged.select_dtypes(include=['float64', 'int64'])
 
 print("Numeric features included in correlation analysis:")
 print(numeric_df.columns)
 
-# 6. COMPUTE CORRELATION MATRIX
+# 6. Compute correlation
 correlation_matrix = numeric_df.corr()
 
 print("\nCorrelation Matrix:")
 print(correlation_matrix)
 
-# 7. VISUALIZE CORRELATION HEATMAP
+# 7. Visualize
 plt.figure(figsize=(11, 8))
 sns.heatmap(
     correlation_matrix,
