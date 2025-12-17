@@ -51,7 +51,7 @@ correlation_matrix = numeric_df.corr()
 print("\nCorrelation Matrix:")
 print(correlation_matrix)
 
-# 7. Visualize
+# 7. Visualization
 plt.figure(figsize=(11, 8))
 sns.heatmap(
     correlation_matrix,

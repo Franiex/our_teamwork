@@ -26,7 +26,7 @@ y_pred = model.predict(X)
 r2 = r2_score(y, y_pred)
 rmse = mean_squared_error(y, y_pred, squared=False)
 
-# 5. PRINT RESULTS
+# 5. Print results
 print("=== LINEAR REGRESSION RESULTS ===")
 print(f"R-squared: {r2:.4f}")
 print(f"RMSE: {rmse:.4f} °C\n")
