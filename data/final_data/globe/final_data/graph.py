@@ -14,7 +14,7 @@ os.makedirs(graphs_dir, exist_ok=True)
 os.makedirs(tables_dir, exist_ok=True)
 
 
-df = pd.read_csv('final_annual_temperature_data.csv')
+df = pd.read_csv('../../../pre_data/csv_file/globe/south_and_north_ hemisphere_comparison.csv')
 
 
 print("=== GENERATING TABLES ===")
@@ -136,3 +136,4 @@ plt.savefig(os.path.join(graphs_dir, 'decade_evolution.png'), dpi=300, bbox_inch
 plt.close()
 
 print("=== FILES ORGANIZED SUCCESSFULLY ===")
+
