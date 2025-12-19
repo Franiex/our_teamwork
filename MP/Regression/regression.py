@@ -7,7 +7,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 temp = pd.read_csv("../csv_files/annual_temperature_data.csv")
 
 # We will use the annual mean absolute temperature
-X = temp[['Year']]
+X = temp[['Year']].copy()
 y = temp['Annual_Mean_Absolute']
 
 # 2. Linear Regression Model
@@ -24,7 +24,8 @@ future_predictions = model.predict(future_years)
 
 y_pred = model.predict(X)
 r2 = r2_score(y, y_pred)
-rmse = mean_squared_error(y, y_pred, squared=False)
+mse = mean_squared_error(y, y_pred)
+rmse = np.sqrt(mse)
 
 # 5. Print results
 print("=== LINEAR REGRESSION RESULTS ===")
