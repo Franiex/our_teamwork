@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import os
 
-os.makedirs('./final_data/table_and_graph', exist_ok=True)
-os.makedirs('./final_data/analyse', exist_ok=True)
+os.makedirs('./Hemispheric_North_south_Comparison/graphs', exist_ok=True)
+os.makedirs('./Hemispheric_North_south_Comparison/analysis', exist_ok=True)
 
 csv_file = '../../../pre_data/csv_file/globe/south_and_north_ hemisphere_comparison.csv'
 
@@ -49,45 +49,45 @@ warming_rate_north = slope_north * 10
 warming_rate_south = slope_south * 10
 
 plt.figure(figsize=(14, 7))
-plt.plot(northern['Year'], northern['Annual_Mean_Abs'], 
+plt.plot(northern['Year'], northern['Annual_Mean_Abs'],
          label='Northern Hemisphere', color='#E74C3C', linewidth=2, alpha=0.8)
-plt.plot(southern['Year'], southern['Annual_Mean_Abs'], 
+plt.plot(southern['Year'], southern['Annual_Mean_Abs'],
          label='Southern Hemisphere', color='#3498DB', linewidth=2, alpha=0.8)
 
 northern_trend = slope_north * northern['Year'] + intercept_north
 southern_trend = slope_south * southern['Year'] + intercept_south
-plt.plot(northern['Year'], northern_trend, '--', color='#C0392B', 
+plt.plot(northern['Year'], northern_trend, '--', color='#C0392B',
          linewidth=1.5, alpha=0.6, label='Northern Trend')
-plt.plot(southern['Year'], southern_trend, '--', color='#2E86C1', 
+plt.plot(southern['Year'], southern_trend, '--', color='#2E86C1',
          linewidth=1.5, alpha=0.6, label='Southern Trend')
 
 plt.xlabel('Year', fontsize=12, fontweight='bold')
 plt.ylabel('Annual Mean Temperature (°C)', fontsize=12, fontweight='bold')
-plt.title('Hemispheric Temperature Comparison (1880-2019)', 
+plt.title('Hemispheric Temperature Comparison (1880-2019)',
           fontsize=14, fontweight='bold', pad=20)
 plt.legend(loc='upper left', fontsize=11)
 plt.grid(True, alpha=0.3, linestyle='--')
 plt.tight_layout()
-plt.savefig('./final_data/table_and_graph/hemisphere_temperature_comparison.png', dpi=300, bbox_inches='tight')
+plt.savefig('./Hemispheric_North_south_Comparison/graphs/hemisphere_temperature_comparison.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(14, 6))
 temp_diff = northern['Annual_Mean_Abs'].values - southern['Annual_Mean_Abs'].values
 plt.plot(northern['Year'], temp_diff, color='#9B59B6', linewidth=2)
 plt.axhline(y=0, color='black', linestyle='-', linewidth=0.8, alpha=0.5)
-plt.fill_between(northern['Year'], temp_diff, 0, 
+plt.fill_between(northern['Year'], temp_diff, 0,
                  where=(temp_diff > 0), color='#E74C3C', alpha=0.3, label='Northern Warmer')
-plt.fill_between(northern['Year'], temp_diff, 0, 
+plt.fill_between(northern['Year'], temp_diff, 0,
                  where=(temp_diff < 0), color='#3498DB', alpha=0.3, label='Southern Warmer')
 
 plt.xlabel('Year', fontsize=12, fontweight='bold')
 plt.ylabel('Temperature Difference (°C)\n(Northern - Southern)', fontsize=12, fontweight='bold')
-plt.title('Temperature Difference Between Hemispheres', 
+plt.title('Temperature Difference Between Hemispheres',
           fontsize=14, fontweight='bold', pad=20)
 plt.legend(loc='best', fontsize=11)
 plt.grid(True, alpha=0.3, linestyle='--')
 plt.tight_layout()
-plt.savefig('./final_data/table_and_graph/hemisphere_temperature_difference.png', dpi=300, bbox_inches='tight')
+plt.savefig('./Hemispheric_North_south_Comparison/graphs/hemisphere_temperature_difference.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(12, 6))
@@ -126,23 +126,23 @@ plt.xticks(x, periods, fontsize=10)
 plt.legend(fontsize=11)
 plt.grid(True, alpha=0.3, linestyle='--', axis='y')
 plt.tight_layout()
-plt.savefig('./final_data/table_and_graph/warming_rates_by_period.png', dpi=300, bbox_inches='tight')
+plt.savefig('./Hemispheric_North_south_Comparison/graphs/warming_rates_by_period.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(12, 6))
-plt.plot(northern['Year'], northern['Annual_Std_Abs'], 
+plt.plot(northern['Year'], northern['Annual_Std_Abs'],
          label='Northern Hemisphere', color='#E74C3C', linewidth=2, alpha=0.8)
-plt.plot(southern['Year'], southern['Annual_Std_Abs'], 
+plt.plot(southern['Year'], southern['Annual_Std_Abs'],
          label='Southern Hemisphere', color='#3498DB', linewidth=2, alpha=0.8)
 
 plt.xlabel('Year', fontsize=12, fontweight='bold')
 plt.ylabel('Temperature Variability (Standard Deviation, °C)', fontsize=12, fontweight='bold')
-plt.title('Hemispheric Temperature Variability Over Time', 
+plt.title('Hemispheric Temperature Variability Over Time',
           fontsize=14, fontweight='bold', pad=20)
 plt.legend(loc='best', fontsize=11)
 plt.grid(True, alpha=0.3, linestyle='--')
 plt.tight_layout()
-plt.savefig('./final_data/table_and_graph/temperature_variability.png', dpi=300, bbox_inches='tight')
+plt.savefig('./Hemispheric_North_south_Comparison/graphs/temperature_variability.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 comparison_data = {
@@ -185,10 +185,10 @@ comparison_df = pd.DataFrame(comparison_data)
 comparison_df['Difference'] = comparison_df['Northern_Hemisphere'] - comparison_df['Southern_Hemisphere']
 comparison_df['Difference'] = comparison_df['Difference'].round(3)
 
-comparison_df.to_csv('./final_data/table_and_graph/hemisphere_comparison_table.csv', index=False)
+comparison_df.to_csv('./Hemispheric_North_south_Comparison/analysis/hemisphere_comparison_table.csv', index=False)
 
 report = f"""HEMISPHERIC TEMPERATURE ANALYSIS REPORT
-Generated: December 17, 2025
+Generated: December 19, 2025
 Data Period: 1880-2019
 ================================================================================
 
@@ -303,7 +303,7 @@ anthropogenic climate change patterns.
 ================================================================================
 """
 
-with open('./final_data/analyse/hemispheric_analysis_report.txt', 'w', encoding='utf-8') as f:
+with open('./Hemispheric_North_south_Comparison/analysis/hemispheric_analysis_report.txt', 'w', encoding='utf-8') as f:
     f.write(report)
 
 northern_export = northern.copy()
@@ -316,7 +316,7 @@ northern_export['Deviation_from_Trend'] = northern_export['Annual_Mean_Abs'] - n
 southern_export['Deviation_from_Trend'] = southern_export['Annual_Mean_Abs'] - southern_export['Warming_Trend']
 
 combined_export = pd.concat([northern_export, southern_export]).sort_values(['Year', 'Hemisphere'])
-combined_export.to_csv('./final_data/analyse/processed_hemisphere_data.csv', index=False)
+combined_export.to_csv('./Hemispheric_North_south_Comparison/analysis/processed_hemisphere_data.csv', index=False)
 
 metrics_summary = {
     'Hemisphere': ['Northern', 'Southern', 'Difference'],
@@ -348,7 +348,7 @@ metrics_summary = {
 }
 
 metrics_df = pd.DataFrame(metrics_summary)
-metrics_df.to_csv('./final_data/analyse/key_metrics_summary.csv', index=False)
+metrics_df.to_csv('./Hemispheric_North_south_Comparison/analysis/key_metrics_summary.csv', index=False)
 
 print("\n" + "=" * 80)
 print("ANALYSIS COMPLETE!")
@@ -358,13 +358,13 @@ print(f"Total records processed: {len(df)}")
 print(f"Northern Hemisphere records: {len(northern)}")
 print(f"Southern Hemisphere records: {len(southern)}")
 print("\nOutputs created:")
-print("  ./final_data/table_and_graph/")
+print("  ./Hemispheric_North_south_Comparison/graphs/")
 print("    - hemisphere_temperature_comparison.png")
 print("    - hemisphere_temperature_difference.png")
 print("    - warming_rates_by_period.png")
 print("    - temperature_variability.png")
+print("\n  ./Hemispheric_North_south_Comparison/analysis/")
 print("    - hemisphere_comparison_table.csv")
-print("\n  ./final_data/analyse/")
 print("    - hemispheric_analysis_report.txt")
 print("    - processed_hemisphere_data.csv")
 print("    - key_metrics_summary.csv")

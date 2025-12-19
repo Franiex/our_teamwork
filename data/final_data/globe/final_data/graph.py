@@ -12,9 +12,8 @@ tables_dir = os.path.join(base_dir, 'tables')
 os.makedirs(graphs_dir, exist_ok=True)
 os.makedirs(tables_dir, exist_ok=True)
 
-df = pd.read_csv('final_annual_temperature_data.csv')
+df = pd.read_csv('../../../pre_data/csv_file/globe/final_annual_temperature_data.csv')
 
-# ===== GENERATE TABLES =====
 print("=== GENERATING TABLES ===")
 
 # Decade summary
