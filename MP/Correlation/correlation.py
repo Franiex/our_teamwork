@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # 1. Load data
-annual_temp = pd.read_csv("../../../pre_data/csv_file/globe/final_annual_temperature_data.csv")
-co2 = pd.read_csv("../../../pre_data/csv_file/globe/final_co2_monthly.csv")
-global_temp = pd.read_csv("../../../pre_data/csv_file/region/GlobalLandTemperaturesByCountry.csv")
+annual_temp = pd.read_csv("../csv_files/annual_temperature_data.csv")
+co2 = pd.read_csv("../csv_files/final_co2_monthly.csv")
+global_temp = pd.read_csv("../csv_files/GlobalLandTemperaturesByCountry.csv")
 
 # 2. Preprocess global temperature data
 global_temp = global_temp[['dt', 'AverageTemperature', 'Country']].dropna()
