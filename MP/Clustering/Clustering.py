@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 
 # 1. Load data
-df = pd.read_csv("../../../pre_data/csv_file/region/GlobalLandTemperaturesByCountry.csv")
+df = pd.read_csv("../csv_files/GlobalLandTemperaturesByCountry.csv")
 
 # Keep necessary columns
 df = df[['dt', 'AverageTemperature', 'Country']].dropna()
