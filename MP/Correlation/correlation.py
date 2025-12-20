@@ -19,7 +19,15 @@ country_annual_temp = (
     .reset_index()
 )
 
-# 3. Preprocess CO2 data
+# 3. Add rolling mean (time feature)
+country_annual_temp = country_annual_temp.sort_values('Year')
+country_annual_temp['Temp_5yr_RollingMean'] = (
+    country_annual_temp
+    .groupby('Country')['AverageTemperature']
+    .transform(lambda x: x.rolling(window=5, min_periods=1).mean())
+)
+
+# 4. Preprocess CO2 data (annual)
 co2_annual = (
     co2.groupby('year')['smoothed_monthly']
     .mean()
@@ -27,7 +35,7 @@ co2_annual = (
     .rename(columns={'year': 'Year', 'smoothed_monthly': 'CO2'})
 )
 
-# 4. Merge datasets
+# 5. Merge datasets
 merged = country_annual_temp.merge(co2_annual, on='Year', how='left')
 
 # Merge with final annual temperature data if Year exists
@@ -39,20 +47,20 @@ if 'Year' in annual_temp.columns:
         suffixes=('_Country', '_Global')
     )
 
-# 5. Select numeric features
+# 6. Select numeric features (now includes Year + rolling mean)
 numeric_df = merged.select_dtypes(include=['float64', 'int64'])
 
 print("Numeric features included in correlation analysis:")
 print(numeric_df.columns)
 
-# 6. Compute correlation
+# 7. Compute correlation
 correlation_matrix = numeric_df.corr()
 
 print("\nCorrelation Matrix:")
 print(correlation_matrix)
 
-# 7. Visualization
-plt.figure(figsize=(11, 8))
+# 8. Visualization
+plt.figure(figsize=(12, 9))
 sns.heatmap(
     correlation_matrix,
     annot=True,
@@ -60,5 +68,5 @@ sns.heatmap(
     cmap="coolwarm",
     square=True
 )
-plt.title("Correlation Analysis: Temperature, CO₂, and Time")
+plt.title("Correlation Analysis: Temperature, CO₂, and Time Features")
 plt.show()
