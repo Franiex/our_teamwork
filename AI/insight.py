@@ -182,89 +182,143 @@ def call_via_http_openai(api_key, api_base, model_name, system_message, user_pro
     import urllib.request, urllib.error
     if not api_key:
         return None
-    url = api_base.rstrip("/") + "/chat/completions"
-    payload = {
+
+    # Helper to try extract text from arbitrary JSON
+    def extract_text_from_json(j):
+        # try common chat/completions places
+        try:
+            choices = j.get("choices", [])
+            if isinstance(choices, list) and choices:
+                c0 = choices[0]
+                # choices[0].message.content (string or dict with parts)
+                msg = c0.get("message") or {}
+                if isinstance(msg, dict):
+                    cont = msg.get("content")
+                    if isinstance(cont, str) and cont.strip():
+                        return cont
+                    if isinstance(cont, (dict, list)):
+                        # try parts
+                        if isinstance(cont, dict):
+                            parts = cont.get("parts") or cont.get("text") or []
+                        else:
+                            parts = cont
+                        if isinstance(parts, list) and parts:
+                            return "".join([p for p in parts if isinstance(p, str)])
+                # choices[0].text
+                t0 = c0.get("text")
+                if isinstance(t0, str) and t0.strip():
+                    return t0
+                # delta
+                delta = c0.get("delta") or {}
+                if isinstance(delta, dict):
+                    dt = delta.get("content") or delta.get("text")
+                    if isinstance(dt, str) and dt.strip():
+                        return dt
+        except Exception:
+            pass
+
+        # try new responses-like structure
+        try:
+            out = j.get("output") or j.get("results") or j.get("data") or []
+            def find_text(obj):
+                if isinstance(obj, str) and obj.strip():
+                    return obj
+                if isinstance(obj, dict):
+                    # common keys
+                    for k in ("text","content","message","output","parts"):
+                        if k in obj:
+                            res = find_text(obj[k])
+                            if res:
+                                return res
+                if isinstance(obj, list):
+                    for it in obj:
+                        res = find_text(it)
+                        if res:
+                            return res
+                return None
+            txt = find_text(out)
+            if txt:
+                return txt
+        except Exception:
+            pass
+        return None
+
+    # 1) Try /chat/completions
+    url1 = api_base.rstrip("/") + "/chat/completions"
+    payload1 = {
         "model": model_name,
         "messages": [
             {"role": "system", "content": system_message},
             {"role": "user", "content": user_prompt}
         ],
-        "max_tokens": 3000,
+        "max_tokens": 1500,
         "temperature": 0.0
     }
-    data = json.dumps(payload).encode("utf-8")
+    data1 = json.dumps(payload1).encode("utf-8")
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
-    req = urllib.request.Request(url, data=data, headers=headers, method="POST")
+    req1 = urllib.request.Request(url1, data=data1, headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req1, timeout=timeout) as resp:
             body = resp.read().decode("utf-8")
             j = json.loads(body)
-            # Robust extraction: try several common locations for text
-            text = None
-            try:
-                choices = j.get("choices", [])
-                if choices and isinstance(choices, list):
-                    c0 = choices[0]
-                    # try message.content (string)
-                    msg = c0.get("message") or {}
-                    if isinstance(msg, dict):
-                        cont = msg.get("content")
-                        if isinstance(cont, str) and cont.strip():
-                            text = cont
-                        # message.content may be dict with parts
-                        if text is None and isinstance(cont, (dict, list)):
-                            parts = []
-                            if isinstance(cont, dict):
-                                parts = cont.get("parts") or cont.get("text") or []
-                            else:
-                                parts = cont
-                            if isinstance(parts, list) and parts:
-                                text = "".join([p for p in parts if isinstance(p, str)])
-                    # choices[0].text
-                    if text is None:
-                        t0 = c0.get("text")
-                        if isinstance(t0, str) and t0.strip():
-                            text = t0
-                    # streaming delta
-                    if text is None:
-                        delta = c0.get("delta") or {}
-                        if isinstance(delta, dict):
-                            dt = delta.get("content") or delta.get("text")
-                            if isinstance(dt, str) and dt.strip():
-                                text = dt
-                # fallback: search nested 'output'/'results' for text
-                if text is None:
-                    out = j.get("output") or j.get("results") or []
-                    def find_text(obj):
-                        if isinstance(obj, str) and obj.strip():
-                            return obj
-                        if isinstance(obj, dict):
-                            for k in ("text","content","message","output","parts"):
-                                if k in obj:
-                                    res = find_text(obj[k])
-                                    if res:
-                                        return res
-                        if isinstance(obj, list):
-                            for item in obj:
-                                res = find_text(item)
-                                if res:
-                                    return res
-                        return None
-                    text = find_text(out)
-            except Exception:
-                text = None
-            # if no text found, return raw JSON string so we can inspect
-            if not text:
-                return json.dumps(j, ensure_ascii=False)
-            return text
+            text = extract_text_from_json(j)
+            if text:
+                return text
+            # if no text, keep the JSON string for debug (but continue to /responses)
+            raw_json_str = json.dumps(j, ensure_ascii=False)
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8") if hasattr(e, 'read') else ""
-        print(f"HTTP 错误: {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
-        return None
+        print(f"HTTP 错误(chats): {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
+        raw_json_str = body
     except Exception as e:
-        print("调用 HTTP 接口出错：", e, file=sys.stderr)
-        return None
-# -------------------- 输出为 Markdown & HTML（便于团队查看） --------------------
+        print("调用 chat/completions 出错：", e, file=sys.stderr)
+        raw_json_str = None
+
+    # 2) If chat returned no text, try /responses (some providers use this)
+    url2 = api_base.rstrip("/") + "/responses"
+    payload2 = {
+        "model": model_name,
+        "input": system_message + "\n\n" + user_prompt,
+        "max_output_tokens": 1500,
+        "temperature": 0.0
+    }
+    data2 = json.dumps(payload2).encode("utf-8")
+    req2 = urllib.request.Request(url2, data=data2, headers=headers, method="POST")
+    try:
+        with urllib.request.urlopen(req2, timeout=timeout) as resp:
+            body = resp.read().decode("utf-8")
+            j = json.loads(body)
+            # new-style responses may hold text in j['output'][0]['content'][0]['text']
+            # try extraction
+            text = extract_text_from_json(j)
+            if text:
+                return text
+            # try specific path
+            try:
+                out = j.get("output") or j.get("results") or []
+                if isinstance(out, list) and out:
+                    first = out[0]
+                    if isinstance(first, dict):
+                        conts = first.get("content") or first.get("data") or []
+                        if isinstance(conts, list) and conts:
+                            # find text fields
+                            for c in conts:
+                                if isinstance(c, dict):
+                                    for key in ("text","title","caption"):
+                                        if key in c and isinstance(c[key], str) and c[key].strip():
+                                            return c[key]
+            except Exception:
+                pass
+            # if still nothing, return raw JSON for debugging
+            return json.dumps(j, ensure_ascii=False)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8") if hasattr(e, 'read') else ""
+        print(f"HTTP 错误(responses): {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
+        return raw_json_str or body
+    except Exception as e:
+        print("调用 responses 出错：", e, file=sys.stderr)
+        return raw_json_str or None
+        # -------------------- 输出为 Markdown & HTML（便于团队查看） --------------------
 def save_markdown_and_html(response_text, csvs_meta, graphs, out_dir):
     out_dir = Path(out_dir)
     md_path = out_dir / "insights.md"
