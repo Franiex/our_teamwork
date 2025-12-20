@@ -5,33 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3cac80f-9eee-4cb2-b1c2-1afca2605ad6" name="Changes" comment="hi">
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/century_summary.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/coldest_years.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/decade_summary.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/hemisphere_comparison_table.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/processed_hemisphere_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/recent_trends.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/statistics_overview.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/temperature_growth_analysis.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/warmest_years.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/decade_evolution.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_tem_comp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_tem_var.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_warm_rate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_comp_hemi.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_grow_reg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_trends_com_reg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temperature_analysis_4panel.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temperature_timeline.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/climate_clusters_by_country.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/correlation_matrix_temperature_co2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/model_performance.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/temperature_forecast_10_years.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/graph/Clustering.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/For_AI/MP/graph/Correlation.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/insight.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/insight.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,6 +131,9 @@
       <workItem from="1763721170772" duration="2826000" />
       <workItem from="1763730123284" duration="1195000" />
       <workItem from="1766228415511" duration="592000" />
+      <workItem from="1766238055642" duration="33000" />
+      <workItem from="1766238173846" duration="31000" />
+      <workItem from="1766238434858" duration="650000" />
     </task>
     <task id="LOCAL-00001" summary="hi">
       <option name="closed" value="true" />
@@ -190,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766228428195</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="hi">
+      <option name="closed" value="true" />
+      <created>1766238085374</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1766238085374</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,17 +195,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="hi" />
     <option name="LAST_COMMIT_MESSAGE" value="hi" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/AI/insight.py</url>
-          <line>416</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/our_teamwork_final$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766228947900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />

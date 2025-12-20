@@ -178,7 +178,8 @@ def call_with_langchain(model_name, system_message, user_prompt):
         print("使用 langchain 调用模型失败：", e, file=sys.stderr)
         return None
 
-def call_via_http_openai(api_key, api_base, model_name, system_message, user_prompt, timeout=60):
+def call_via_http_openai(api_key, api_base, model_name, system_message, user_prompt, timeout=120):
+    import urllib.request, urllib.error
     if not api_key:
         return None
     url = api_base.rstrip("/") + "/chat/completions"
@@ -188,25 +189,74 @@ def call_via_http_openai(api_key, api_base, model_name, system_message, user_pro
             {"role": "system", "content": system_message},
             {"role": "user", "content": user_prompt}
         ],
-        "max_tokens": 1500,
+        "max_tokens": 3000,
         "temperature": 0.0
     }
     data = json.dumps(payload).encode("utf-8")
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"
-    }
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
     req = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8")
             j = json.loads(body)
-            if "choices" in j and len(j["choices"]) > 0:
-                msg = j["choices"][0].get("message", {})
-                if isinstance(msg, dict):
-                    content = msg.get("content") or msg.get("text")
-                    return content or json.dumps(j, ensure_ascii=False)
-            return json.dumps(j, ensure_ascii=False)
+            # Robust extraction: try several common locations for text
+            text = None
+            try:
+                choices = j.get("choices", [])
+                if choices and isinstance(choices, list):
+                    c0 = choices[0]
+                    # try message.content (string)
+                    msg = c0.get("message") or {}
+                    if isinstance(msg, dict):
+                        cont = msg.get("content")
+                        if isinstance(cont, str) and cont.strip():
+                            text = cont
+                        # message.content may be dict with parts
+                        if text is None and isinstance(cont, (dict, list)):
+                            parts = []
+                            if isinstance(cont, dict):
+                                parts = cont.get("parts") or cont.get("text") or []
+                            else:
+                                parts = cont
+                            if isinstance(parts, list) and parts:
+                                text = "".join([p for p in parts if isinstance(p, str)])
+                    # choices[0].text
+                    if text is None:
+                        t0 = c0.get("text")
+                        if isinstance(t0, str) and t0.strip():
+                            text = t0
+                    # streaming delta
+                    if text is None:
+                        delta = c0.get("delta") or {}
+                        if isinstance(delta, dict):
+                            dt = delta.get("content") or delta.get("text")
+                            if isinstance(dt, str) and dt.strip():
+                                text = dt
+                # fallback: search nested 'output'/'results' for text
+                if text is None:
+                    out = j.get("output") or j.get("results") or []
+                    def find_text(obj):
+                        if isinstance(obj, str) and obj.strip():
+                            return obj
+                        if isinstance(obj, dict):
+                            for k in ("text","content","message","output","parts"):
+                                if k in obj:
+                                    res = find_text(obj[k])
+                                    if res:
+                                        return res
+                        if isinstance(obj, list):
+                            for item in obj:
+                                res = find_text(item)
+                                if res:
+                                    return res
+                        return None
+                    text = find_text(out)
+            except Exception:
+                text = None
+            # if no text found, return raw JSON string so we can inspect
+            if not text:
+                return json.dumps(j, ensure_ascii=False)
+            return text
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8") if hasattr(e, 'read') else ""
         print(f"HTTP 错误: {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
@@ -214,7 +264,6 @@ def call_via_http_openai(api_key, api_base, model_name, system_message, user_pro
     except Exception as e:
         print("调用 HTTP 接口出错：", e, file=sys.stderr)
         return None
-
 # -------------------- 输出为 Markdown & HTML（便于团队查看） --------------------
 def save_markdown_and_html(response_text, csvs_meta, graphs, out_dir):
     out_dir = Path(out_dir)
