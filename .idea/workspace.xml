@@ -5,6 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3cac80f-9eee-4cb2-b1c2-1afca2605ad6" name="Changes" comment="hi">
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/century_summary.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/coldest_years.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/decade_summary.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/hemisphere_comparison_table.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/processed_hemisphere_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/recent_trends.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/statistics_overview.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/temperature_growth_analysis.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/csv/warmest_years.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/decade_evolution.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_tem_comp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_tem_var.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/hemi_warm_rate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_comp_hemi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_grow_reg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temp_trends_com_reg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temperature_analysis_4panel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/FD/graph/temperature_timeline.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/climate_clusters_by_country.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/correlation_matrix_temperature_co2.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/model_performance.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/csv/temperature_forecast_10_years.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/graph/Clustering.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/For_AI/MP/graph/Correlation.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/insight.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/insight.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,12 +60,12 @@
     &quot;assignee&quot;: &quot;Guderisans&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Franiex/our_teamwork.git",
-    "accountId": "425b3f5b-d09e-4d38-b288-975f6c3400c0"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Franiex/our_teamwork.git&quot;,
+    &quot;accountId&quot;: &quot;425b3f5b-d09e-4d38-b288-975f6c3400c0&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -51,32 +77,59 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.insight.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature-AI",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "E:/python/Final Project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.Jupyter Settings",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.insight.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-AI&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/franiex/PycharmProjects/our_teamworkfi&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.Jupyter Settings&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="E:\python\Final Project" />
       <recent name="E:\python\Final Project\feature" />
       <recent name="E:\python\Final Project\feature\1" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="insight" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.13" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AI" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AI/insight.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -158,7 +211,19 @@
     <MESSAGE value="hi" />
     <option name="LAST_COMMIT_MESSAGE" value="hi" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/AI/insight.py</url>
+          <line>416</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/our_teamwork_final$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766228947900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />
+    <SUITE FILE_PATH="coverage/our_teamworkfi$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766237033509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />
   </component>
 </project>
