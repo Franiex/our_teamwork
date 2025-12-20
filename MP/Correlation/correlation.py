@@ -47,19 +47,17 @@ if 'Year' in annual_temp.columns:
         suffixes=('_Country', '_Global')
     )
 
-# 6. Select numeric features (now includes Year + rolling mean)
+# 6. Select numeric features
 numeric_df = merged.select_dtypes(include=['float64', 'int64'])
-
-print("Numeric features included in correlation analysis:")
-print(numeric_df.columns)
 
 # 7. Compute correlation
 correlation_matrix = numeric_df.corr()
 
-print("\nCorrelation Matrix:")
-print(correlation_matrix)
+# 8. Save correlation matrix to CSV
+output_path = "../csv_files/correlation_matrix_temperature_co2.csv"
+correlation_matrix.to_csv(output_path)
 
-# 8. Visualization
+# 9. Visualization
 plt.figure(figsize=(12, 9))
 sns.heatmap(
     correlation_matrix,

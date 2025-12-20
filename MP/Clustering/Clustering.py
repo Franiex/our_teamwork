@@ -50,5 +50,6 @@ plt.title("Climate Clusters Based on Temperature and CO₂")
 plt.grid(True)
 plt.show()
 
-# 7. Display output
-print(country_temp.head())
+# 7. Save output to CSV
+output_path = "../csv_files/climate_clusters_by_country.csv"
+country_temp.to_csv(output_path, index=False)
