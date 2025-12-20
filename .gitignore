@@ -1,2 +1,14 @@
 .DS_Store
 **/.DS_Store
+
+# 忽略PyCharm的IDE配置目录
+.idea/
+# 忽略PyCharm单独的项目配置文件
+*.iml
+*.iws
+*.ipr
+# 忽略Python虚拟环境与缓存
+venv/
+.venv/
+__pycache__/
+*.pyc
