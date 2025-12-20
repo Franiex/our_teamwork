@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3cac80f-9eee-4cb2-b1c2-1afca2605ad6" name="Changes" comment="hi">
-      <change beforePath="$PROJECT_DIR$/.idea/our_teamworkfi.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/ai_insight_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/AI/ai_insight_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/insight.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/insight.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -138,7 +138,8 @@
       <workItem from="1766238434858" duration="847000" />
       <workItem from="1766239425351" duration="73000" />
       <workItem from="1766239685514" duration="641000" />
-      <workItem from="1766241091093" duration="315000" />
+      <workItem from="1766241091093" duration="1105000" />
+      <workItem from="1766242223135" duration="1024000" />
     </task>
     <task id="LOCAL-00001" summary="hi">
       <option name="closed" value="true" />
@@ -212,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766240324629</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="hi">
+      <option name="closed" value="true" />
+      <created>1766241633926</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1766241633926</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +244,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/our_teamwork_final$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766228947900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />
-    <SUITE FILE_PATH="coverage/our_teamworkfi$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766241363199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />
+    <SUITE FILE_PATH="coverage/our_teamworkfi$insight.coverage" NAME="insight 覆盖结果" MODIFIED="1766243402276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI" />
   </component>
 </project>
