@@ -178,146 +178,141 @@ def call_with_langchain(model_name, system_message, user_prompt):
         print("使用 langchain 调用模型失败：", e, file=sys.stderr)
         return None
 
-def call_via_http_openai(api_key, api_base, model_name, system_message, user_prompt, timeout=120):
-    import urllib.request, urllib.error
-    if not api_key:
-        return None
-
-    # Helper to try extract text from arbitrary JSON
-    def extract_text_from_json(j):
-        # try common chat/completions places
-        try:
-            choices = j.get("choices", [])
-            if isinstance(choices, list) and choices:
-                c0 = choices[0]
-                # choices[0].message.content (string or dict with parts)
-                msg = c0.get("message") or {}
-                if isinstance(msg, dict):
-                    cont = msg.get("content")
-                    if isinstance(cont, str) and cont.strip():
-                        return cont
-                    if isinstance(cont, (dict, list)):
-                        # try parts
-                        if isinstance(cont, dict):
-                            parts = cont.get("parts") or cont.get("text") or []
-                        else:
-                            parts = cont
-                        if isinstance(parts, list) and parts:
-                            return "".join([p for p in parts if isinstance(p, str)])
-                # choices[0].text
-                t0 = c0.get("text")
-                if isinstance(t0, str) and t0.strip():
-                    return t0
-                # delta
-                delta = c0.get("delta") or {}
-                if isinstance(delta, dict):
-                    dt = delta.get("content") or delta.get("text")
-                    if isinstance(dt, str) and dt.strip():
-                        return dt
-        except Exception:
-            pass
-
-        # try new responses-like structure
-        try:
-            out = j.get("output") or j.get("results") or j.get("data") or []
-            def find_text(obj):
-                if isinstance(obj, str) and obj.strip():
-                    return obj
-                if isinstance(obj, dict):
-                    # common keys
-                    for k in ("text","content","message","output","parts"):
-                        if k in obj:
-                            res = find_text(obj[k])
-                            if res:
-                                return res
-                if isinstance(obj, list):
-                    for it in obj:
-                        res = find_text(it)
-                        if res:
-                            return res
+def call_via_http_openai(api_key, api_base, model_name, system_message, user_prompt, timeout=180):
+            import urllib.request, urllib.error, time
+            if not api_key:
                 return None
-            txt = find_text(out)
-            if txt:
-                return txt
-        except Exception:
-            pass
-        return None
 
-    # 1) Try /chat/completions
-    url1 = api_base.rstrip("/") + "/chat/completions"
-    payload1 = {
-        "model": model_name,
-        "messages": [
-            {"role": "system", "content": system_message},
-            {"role": "user", "content": user_prompt}
-        ],
-        "max_tokens": 1500,
-        "temperature": 0.0
-    }
-    data1 = json.dumps(payload1).encode("utf-8")
-    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
-    req1 = urllib.request.Request(url1, data=data1, headers=headers, method="POST")
-    try:
-        with urllib.request.urlopen(req1, timeout=timeout) as resp:
-            body = resp.read().decode("utf-8")
-            j = json.loads(body)
-            text = extract_text_from_json(j)
-            if text:
-                return text
-            # if no text, keep the JSON string for debug (but continue to /responses)
-            raw_json_str = json.dumps(j, ensure_ascii=False)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8") if hasattr(e, 'read') else ""
-        print(f"HTTP 错误(chats): {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
-        raw_json_str = body
-    except Exception as e:
-        print("调用 chat/completions 出错：", e, file=sys.stderr)
-        raw_json_str = None
+            # If prompt string is extremely long, truncate conservatively (avoid token overflow)
+            MAX_PROMPT_CHARS = 30000
+            if isinstance(user_prompt, str) and len(user_prompt) > MAX_PROMPT_CHARS:
+                user_prompt = user_prompt[-MAX_PROMPT_CHARS:]  # keep the tail (recent info)
 
-    # 2) If chat returned no text, try /responses (some providers use this)
-    url2 = api_base.rstrip("/") + "/responses"
-    payload2 = {
-        "model": model_name,
-        "input": system_message + "\n\n" + user_prompt,
-        "max_output_tokens": 1500,
-        "temperature": 0.0
-    }
-    data2 = json.dumps(payload2).encode("utf-8")
-    req2 = urllib.request.Request(url2, data=data2, headers=headers, method="POST")
-    try:
-        with urllib.request.urlopen(req2, timeout=timeout) as resp:
-            body = resp.read().decode("utf-8")
-            j = json.loads(body)
-            # new-style responses may hold text in j['output'][0]['content'][0]['text']
-            # try extraction
-            text = extract_text_from_json(j)
-            if text:
-                return text
-            # try specific path
+            headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+
+            def extract_text_from_json(j):
+                try:
+                    # common chat/completions places
+                    choices = j.get("choices", [])
+                    if isinstance(choices, list) and choices:
+                        c0 = choices[0]
+                        msg = c0.get("message") or {}
+                        if isinstance(msg, dict):
+                            cont = msg.get("content")
+                            if isinstance(cont, str) and cont.strip():
+                                return cont
+                            if isinstance(cont, (dict, list)):
+                                parts = cont.get("parts") if isinstance(cont, dict) else cont
+                                if isinstance(parts, list) and parts:
+                                    return "".join(p for p in parts if isinstance(p, str))
+                        t0 = c0.get("text")
+                        if isinstance(t0, str) and t0.strip():
+                            return t0
+                        delta = c0.get("delta") or {}
+                        if isinstance(delta, dict):
+                            dt = delta.get("content") or delta.get("text")
+                            if isinstance(dt, str) and dt.strip():
+                                return dt
+                except Exception:
+                    pass
+
+                # responses-like structure
+                try:
+                    out = j.get("output") or j.get("results") or j.get("data") or []
+
+                    def find_text(obj):
+                        if isinstance(obj, str) and obj.strip():
+                            return obj
+                        if isinstance(obj, dict):
+                            for k in ("text", "content", "message", "output", "parts"):
+                                if k in obj:
+                                    res = find_text(obj[k])
+                                    if res:
+                                        return res
+                        if isinstance(obj, list):
+                            for it in obj:
+                                res = find_text(it)
+                                if res:
+                                    return res
+                        return None
+
+                    txt = find_text(out)
+                    if txt:
+                        return txt
+                except Exception:
+                    pass
+                return None
+
+            # 1) Try chat/completions (max_tokens increased)
+            url1 = api_base.rstrip("/") + "/chat/completions"
+            payload1 = {
+                "model": model_name,
+                "messages": [
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_prompt}
+                ],
+                "max_tokens": 3000,  # request larger output (provider may cap)
+                "temperature": 0.0
+            }
             try:
-                out = j.get("output") or j.get("results") or []
-                if isinstance(out, list) and out:
-                    first = out[0]
-                    if isinstance(first, dict):
-                        conts = first.get("content") or first.get("data") or []
-                        if isinstance(conts, list) and conts:
-                            # find text fields
-                            for c in conts:
-                                if isinstance(c, dict):
-                                    for key in ("text","title","caption"):
-                                        if key in c and isinstance(c[key], str) and c[key].strip():
-                                            return c[key]
+                data1 = json.dumps(payload1).encode("utf-8")
+                req1 = urllib.request.Request(url1, data=data1, headers=headers, method="POST")
+                with urllib.request.urlopen(req1, timeout=timeout) as resp:
+                    body = resp.read().decode("utf-8")
+                    j = json.loads(body)
+                    text = extract_text_from_json(j)
+                    if text:
+                        return text
+                    raw_j = j
+            except urllib.error.HTTPError as e:
+                try:
+                    body = e.read().decode("utf-8")
+                except Exception:
+                    body = ""
+                raw_j = None
             except Exception:
-                pass
-            # if still nothing, return raw JSON for debugging
-            return json.dumps(j, ensure_ascii=False)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8") if hasattr(e, 'read') else ""
-        print(f"HTTP 错误(responses): {e.code} {e.reason}. 响应: {body}", file=sys.stderr)
-        return raw_json_str or body
-    except Exception as e:
-        print("调用 responses 出错：", e, file=sys.stderr)
-        return raw_json_str or None
+                raw_j = None
+
+            # 2) If chat returned no text, try /responses (some providers return actual text here)
+            url2 = api_base.rstrip("/") + "/responses"
+            payload2 = {
+                "model": model_name,
+                "input": system_message + "\n\n" + (user_prompt if len(user_prompt) < 20000 else user_prompt[-20000:]),
+                "max_output_tokens": 3000,
+                "temperature": 0.0
+            }
+            try:
+                data2 = json.dumps(payload2).encode("utf-8")
+                req2 = urllib.request.Request(url2, data=data2, headers=headers, method="POST")
+                with urllib.request.urlopen(req2, timeout=timeout) as resp:
+                    body = resp.read().decode("utf-8")
+                    j = json.loads(body)
+                    text = extract_text_from_json(j)
+                    if text:
+                        return text
+                    # try direct paths
+                    out = j.get("output") or j.get("results") or []
+                    if isinstance(out, list) and out:
+                        first = out[0]
+                        if isinstance(first, dict):
+                            conts = first.get("content") or first.get("data") or []
+                            if isinstance(conts, list):
+                                for c in conts:
+                                    if isinstance(c, dict):
+                                        for key in ("text", "title", "caption"):
+                                            if key in c and isinstance(c[key], str) and c[key].strip():
+                                                return c[key]
+                    return json.dumps(j, ensure_ascii=False)
+            except urllib.error.HTTPError as e:
+                try:
+                    body = e.read().decode("utf-8")
+                except Exception:
+                    body = ""
+                return json.dumps(raw_j, ensure_ascii=False) if raw_j is not None else body
+            except Exception:
+                return json.dumps(raw_j, ensure_ascii=False) if raw_j is not None else None
+
+
         # -------------------- 输出为 Markdown & HTML（便于团队查看） --------------------
 def save_markdown_and_html(response_text, csvs_meta, graphs, out_dir):
     out_dir = Path(out_dir)
